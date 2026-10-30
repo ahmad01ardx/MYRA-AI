@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100d20">
+  <title>Myra AI — Voice Companion</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b0914;--panel:#151126;--panel2:#1d1734;--purple:#9b7bff;--pink:#ed8dff;--text:#f7f3ff;--muted:#aaa1c4;--border:#34294f}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -20%,#35205e 0%,transparent 55%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;display:flex;justify-content:center;padding:18px}
+    .app{width:min(100%,760px);min-height:calc(100vh - 36px);display:flex;flex-direction:column;background:rgba(17,13,31,.88);border:1px solid var(--border);border-radius:26px;overflow:hidden;box-shadow:0 24px 90px #0008}
+    header{padding:19px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);background:#171128bb}
+    .logo{width:45px;height:45px;border-radius:16px;background:linear-gradient(135deg,var(--purple),var(--pink));display:grid;place-items:center;color:#170d2c;font-weight:900;font-size:23px;box-shadow:0 0 25px #9b7bff55}
+    h1{font-size:17px;margin:0 0 4px;letter-spacing:.2px}.sub{font-size:12px;color:var(--muted)}.status{margin-left:auto;display:flex;align-items:center;gap:7px;color:#b7ffd8;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#5cf0a4;box-shadow:0 0 10px #5cf0a4}
+    .hero{text-align:center;padding:27px 18px 16px}
+    .orb{width:108px;height:108px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 25%,#f4d7ff,#a184ff 35%,#3c246a 72%);box-shadow:0 0 0 8px #9b7bff12,0 0 55px #9b7bff3b;font-size:45px}
+    .hero h2{margin:0;font-size:23px}.hero p{margin:8px auto 0;max-width:420px;color:var(--muted);font-size:13px;line-height:1.6}
+    .quick{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:0 16px 15px}
+    .chip{border:1px solid var(--border);background:#1b1530;color:#e8dfff;border-radius:999px;padding:9px 12px;font-size:12px;cursor:pointer}
+    .chat{margin:0 15px 12px;padding:13px;flex:1;min-height:220px;max-height:44vh;overflow:auto;border:1px solid var(--border);border-radius:19px;background:#0d0a18a8}
+    .msg{display:flex;margin:0 0 12px;gap:9px;align-items:flex-start}.msg:last-child{margin-bottom:0}.avatar{width:28px;height:28px;flex:0 0 28px;border-radius:10px;background:#30204e;display:grid;place-items:center;font-size:13px}.bubble{max-width:88%;padding:11px 13px;border-radius:4px 15px 15px 15px;background:#1b1530;border:1px solid #302447;font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.user{justify-content:flex-end}.user .avatar{order:2;background:#6d4ed3;color:white}.user .bubble{background:linear-gradient(135deg,#6d4ed3,#8054c8);border:0;border-radius:15px 4px 15px 15px}
+    .composer{padding:13px 15px 15px;border-top:1px solid var(--border);background:#151025}
+    .inputrow{display:flex;gap:8px;align-items:center}.inputrow input{min-width:0;flex:1;background:#0d0a18;border:1px solid var(--border);border-radius:15px;padding:14px 13px;color:var(--text);font:inherit;font-size:14px;outline:none}.inputrow input:focus{border-color:var(--purple)}
+    button{font:inherit}.send,.mic{border:0;border-radius:14px;width:47px;height:47px;display:grid;place-items:center;cursor:pointer;font-size:19px}.send{background:linear-gradient(135deg,var(--purple),var(--pink));color:#1a1029}.mic{background:#2a2041;color:white;border:1px solid #493663}.mic.listening{background:#a33c69;animation:pulse 1.2s infinite}
+    .under{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:10px;color:var(--muted);font-size:11px}.under button{background:none;border:0;color:#c9b6ff;text-decoration:underline;cursor:pointer;padding:4px}
+    @keyframes pulse{50%{box-shadow:0 0 0 7px #ed8dff22}}
+    @media(min-height:850px){.chat{max-height:45vh}}
+    @media(max-width:420px){body{padding:0}.app{min-height:100vh;border-radius:0;border:0}.hero{padding-top:21px}.chat{max-height:42vh}.status{font-size:0}.status .dot{width:9px;height:9px}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="logo">M</div>
+      <div><h1>Myra AI</h1><div class="sub">Your voice companion · Preview</div></div>
+      <div class="status"><span class="dot"></span> Ready to chat</div>
+    </header>
+    <section class="hero">
+      <div class="orb" aria-hidden="true">✦</div>
+      <h2>Hey, I'm Myra.</h2>
+      <p>Talk to me, type a message, or try a quick prompt. This free preview uses your browser's built-in voice features.</p>
+    </section>
+    <div class="quick" aria-label="Suggested prompts">
+      <button class="chip" data-prompt="Tell me a fun fact">✨ Fun fact</button>
+      <button class="chip" data-prompt="Help me plan my day">🗓️ Plan my day</button>
+      <button class="chip" data-prompt="Give me motivation">💜 Motivate me</button>
+    </div>
+    <section class="chat" id="chat" aria-live="polite">
+      <div class="msg"><div class="avatar">✦</div><div class="bubble">Hi! I'm Myra. 💜 I'm a website demo right now, so I can reply to a few common prompts. Type a message or tap the microphone to try voice input.</div></div>
+    </section>
+    <section class="composer">
+      <form class="inputrow" id="form">
+        <input id="message" autocomplete="off" placeholder="Message Myra..." aria-label="Message Myra">
+        <button type="button" class="mic" id="mic" aria-label="Start voice input" title="Voice input">🎙️</button>
+        <button class="send" type="submit" aria-label="Send message" title="Send">➤</button>
+      </form>
+      <div class="under"><span id="voiceStatus">Voice depends on browser support.</span><button type="button" id="stopVoice">Stop speaking</button></div>
+    </section>
+  </main>
+  <script>
+    const chat = document.getElementById('chat');
+    const form = document.getElementById('form');
+    const input = document.getElementById('message');
+    const mic = document.getElementById('mic');
+    const voiceStatus = document.getElementById('voiceStatus');
+    let recognition = null;
+    let isListening = false;
+
+    function addMessage(text, who='myra') {
+      const row = document.createElement('div');
+      row.className = 'msg' + (who === 'user' ? ' user' : '');
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.textContent = who === 'user' ? 'You' : '✦';
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = text;
+      row.append(avatar, bubble);
+      chat.appendChild(row);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function makeReply(text) {
+      const q = text.toLowerCase();
+      if (/\b(hi|hello|hey|salam|assalam|hlo)\b/.test(q)) return "Hey! 💜 I'm here. What would you like to talk about?";
+      if (q.includes('your name') || q.includes('who are you')) return "I'm Myra AI, your friendly voice-companion website preview. ✨";
+      if (q.includes('motivat') || q.includes('sad') || q.includes('stress')) return "Take things one step at a time. You don't have to solve everything at once. Pick one small thing you can do now, and start there. 💜";
+      if (q.includes('fun fact') || q.includes('fact')) return "Here's a fun fact: honeybees communicate the direction of food using a special movement called the waggle dance. 🐝";
+      if (q.includes('plan') || q.includes('day')) return "Let's keep it simple: 1) Choose your top priority. 2) Do one small task. 3) Take a short break. 4) Review what you finished. What is your main goal today?";
+      if (q.includes('time') || q.includes('date')) return "I can't check live time or date in this demo, but your phone's clock can help with that.";
+      if (q.includes('thank')) return "You're welcome! 💜";
+      if (q.includes('help')) return "I can chat using this demo, read replies aloud, and try voice input if your browser supports it. This version isn't connected to a live AI model yet.";
+      return "I hear you. 💜 This free preview isn't connected to a real AI model yet, so my replies are limited. We can build the next version with a free-tier AI option if one is available.";
+    }
+
+    function speak(text) {
+      if (!('speechSynthesis' in window)) {
+        voiceStatus.textContent = 'Speech output is not supported in this browser.';
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.96;
+      utterance.pitch = 1.08;
+      utterance.onstart = () => voiceStatus.textContent = 'Myra is speaking…';
+      utterance.onend = () => voiceStatus.textContent = 'Ready for your next message.';
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function sendMessage(text) {
+      const clean = text.trim();
+      if (!clean) return;
+      addMessage(clean, 'user');
+      input.value = '';
+      const reply = makeReply(clean);
+      window.setTimeout(() => {
+        addMessage(reply);
+        speak(reply);
+      }, 350);
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      sendMessage(input.value);
+    });
+
+    document.querySelectorAll('[data-prompt]').forEach(button => {
+      button.addEventListener('click', () => sendMessage(button.dataset.prompt));
+    });
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.continuous = false;
+      recognition.onstart = () => {
+        isListening = true;
+        mic.classList.add('listening');
+        mic.textContent = '⏹️';
+        voiceStatus.textContent = 'Listening… speak now.';
+      };
+      recognition.onresult = event => {
+        const transcript = event.results[0][0].transcript;
+        input.value = transcript;
+        voiceStatus.textContent = 'Heard: ' + transcript;
+        sendMessage(transcript);
+      };
+      recognition.onerror = event => {
+        voiceStatus.textContent = 'Voice input issue: ' + event.error + '. You can type instead.';
+      };
+      recognition.onend = () => {
+        isListening = false;
+        mic.classList.remove('listening');
+        mic.textContent = '🎙️';
+      };
+      mic.addEventListener('click', () => {
+        if (isListening) recognition.stop();
+        else {
+          try { recognition.start(); }
+          catch (err) { voiceStatus.textContent = 'Please wait a moment, then tap the mic again.'; }
+        }
+      });
+    } else {
+      mic.addEventListener('click', () => {
+        voiceStatus.textContent = 'This browser does not support voice input. Try Chrome or type your message.';
+      });
+    }
+
+    document.getElementById('stopVoice').addEventListener('click', () => {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      if (recognition && isListening) recognition.stop();
+      voiceStatus.textContent = 'Voice stopped.';
+    });
+  </script>
+</body>
+</html>
